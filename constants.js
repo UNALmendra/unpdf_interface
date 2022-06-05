@@ -1,5 +1,5 @@
 module.exports = {
-    apiUrl: `http://localhost:5000/graphql`,
+    apiUrl: `http://35.239.72.193:5000/graphql`,
     queries: {
         getDocumentsUser: `
             query DocumentsUser ($user: String!){
