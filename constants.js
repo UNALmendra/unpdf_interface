@@ -9,31 +9,5 @@ module.exports = {
                   type
                 }
               }`
-      },
-    // mutations: {
-    //   postNewDocument: `
-    //     mutation PostNewDocument($document: NewDocument){
-    //       postNewDocument(document: $document) {
-    //         storage
-    //       }
-    //     }
-    //     `
-    // }
+      }, 
   }
-
-//   query {
-//     documents_user(user:"user3") {
-//       storage,
-//       name
-//     }
-//   }
-
-
-//   query {
-//     logsById(Doc: "10") {
-//       Doc,
-//       Description,
-//       User,
-//       Date,
-//     }
-//   }
