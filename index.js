@@ -1,39 +1,37 @@
+var soap = require("soap");
 var express = require("express");
-var { graphqlHTTP } = require("express-graphql");
-var { buildSchema } = require("graphql");
+var fs = require("fs");
 
-var schema = buildSchema(`
-type Log {
-    Doc: String
-    Description: String
-    User: String
-    Date: String
-}
-input LogInput{
-  doc: String!
-  user: String!
-  description: String!
-}
+const axios_ = require("axios");
+const apiUrl = require("./constants").apiUrl;
+const queries = require("./constants").queries;
 
-type Query {
-    logsById(Doc: String): [Log]
-}
+const getDocumentsUser = async (args) => {
+  const response = await axios_.post(apiUrl, {
+    query: queries.getDocumentsUser,
+    variables: { user: args.user },
+  });
+  return response.data.data;
+};
 
-`);
-
-var root = {
-  logsById: (Doc) => {
-    return ["test", "test", Doc];
+var serviceObject = {
+  DocumentsService: {
+    DocumentsServiceSoapPort: {
+      Documents: getDocumentsUser,
+    },
+    DocumentsServiceSoap12Port: {
+      Documents: getDocumentsUser,
+    },
   },
 };
 
+var xml = fs.readFileSync("service.wsdl", "utf8");
+
 var app = express();
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-  })
-);
-app.listen(3002);
+
+app.listen(3002, function () {
+  var wsdl_path = "/wsdl";
+  soap.listen(app, wsdl_path, serviceObject, xml);
+  console.log("Check http://localhost:3002" + wsdl_path + "?wsdl");
+});
+console.log("Running on 3002");
