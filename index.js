@@ -2,6 +2,18 @@ var express = require("express");
 var { graphqlHTTP } = require("express-graphql");
 var { buildSchema } = require("graphql");
 
+const axios_ = require("axios");
+const apiUrl = require("./constants").apiUrl;
+const queries = require("./constants").queries;
+
+const getDocumentsUser = async (user) => {
+  const response = await axios_.post(apiUrl, {
+    query: queries.getDocumentsUser,
+    variables: { user: user },
+  });
+  return response.data.data;
+};
+
 var schema = buildSchema(`
 type Log {
     Doc: String
@@ -22,18 +34,30 @@ type Query {
 `);
 
 var root = {
-  logsById: (Doc) => {
-    return ["test", "test", Doc];
+  logsById: async (Doc) => {
+    const response = await getDocumentsUser("10");
+    return response;
   },
 };
 
 var app = express();
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true,
-  })
-);
+app.get("/2E", (req, res) => {
+  getDocumentsUser
+getDocumentsUser("Johan")
+    .then((response) => {
+      res.send(response);
+    })
+    .catch((e) => {
+      console.error(e);
+    });
+});
+
+// app.use(
+//   "/graphql",
+//   graphqlHTTP({
+//     schema: schema,
+//     rootValue: root,
+//     graphiql: true,
+//   })
+// );
 app.listen(3002);
