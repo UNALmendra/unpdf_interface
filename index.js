@@ -26,8 +26,21 @@ var serviceObject = {
 };
 
 var xml = fs.readFileSync("service.wsdl", "utf8");
-
 var app = express();
+
+app.get("/2B/:id?", async (req, response) => {
+  var id = req.params.key;
+  let userId = "31e5d31c-d36e-441d-a666-37d272f16a35";
+  if (id) userId = id;
+  var url = "http://soap.skillsly.app:8080/ws/users.wsdl";
+  var args = { userId: userId };
+  await soap.createClient(url, function (err, client) {
+    client.getUser(args, function (err, res) {
+      if (err) throw err;
+      response.send(res);
+    });
+  });
+});
 
 app.listen(3002, function () {
   var wsdl_path = "/wsdl";
