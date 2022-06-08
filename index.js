@@ -39,9 +39,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use(cors({
-  origin: "http://localhost:3000"
-}))
+app.use(cors())
 
 app.get("/2B/:id?", async (req, response) => {
   var id = req.params.id;
