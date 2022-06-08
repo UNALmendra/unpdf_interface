@@ -28,6 +28,15 @@ var serviceObject = {
 var xml = fs.readFileSync("service.wsdl", "utf8");
 var app = express();
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
+
 app.get("/2B/:id?", async (req, response) => {
   var id = req.params.key;
   let userId = "31e5d31c-d36e-441d-a666-37d272f16a35";
