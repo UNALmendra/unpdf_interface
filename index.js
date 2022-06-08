@@ -1,6 +1,7 @@
 var soap = require("soap");
 var express = require("express");
 var fs = require("fs");
+var cors = require("cors");
 
 const axios_ = require("axios");
 const apiUrl = require("./constants").apiUrl;
@@ -29,6 +30,7 @@ var xml = fs.readFileSync("service.wsdl", "utf8");
 var app = express();
 
 app.use(function (req, res, next) {
+  
   res.header("Access-Control-Allow-Origin", "*");
   res.header(
     "Access-Control-Allow-Headers",
@@ -37,8 +39,12 @@ app.use(function (req, res, next) {
   next();
 });
 
+app.use(cors({
+  origin: "http://localhost:3000"
+}))
+
 app.get("/2B/:id?", async (req, response) => {
-  var id = req.params.key;
+  var id = req.params.id;
   let userId = "31e5d31c-d36e-441d-a666-37d272f16a35";
   if (id) userId = id;
   var url = "http://soap.skillsly.app:8080/ws/users.wsdl";
