@@ -45,7 +45,7 @@ app.get("/2B/:id?", async (req, response) => {
   var id = req.params.id;
   let userId = "31e5d31c-d36e-441d-a666-37d272f16a35";
   if (id) userId = id;
-  var url = "http://soap.skillsly.app:8080/ws/users.wsdl";
+  var url = "https://api.skillsly.app/soap/ws";
   var args = { userId: userId };
   await soap.createClient(url, function (err, client) {
     client.getUser(args, function (err, res) {
